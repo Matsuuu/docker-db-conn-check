@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+
+  api:
+    image: node
+    command: npm run start
+    volumes: 
+      - ./api:/usr/api
+    working_dir: /usr/api
+    ports:
+      - '3000:3000'
+    depends_on:
+      - db
+    environment:
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGHOST: db
+      PGDATABASE: testapp
+      PGPORT: 5432
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: testapp
+    ports:
+      - '5432:5432'
+    volumes: 
+      - ./db:/var/lib/postgresql/data
